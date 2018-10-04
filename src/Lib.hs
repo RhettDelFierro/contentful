@@ -1,9 +1,6 @@
-module Lib ( module Queries.HardwareQueries
-           , module Queries.GameQueries
+module Lib ( getAllHardwareIO
+           , getAllGamesIO
 ) where
 
 import Queries.HardwareQueries
 import Queries.GameQueries
-
-
-

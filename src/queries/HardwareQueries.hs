@@ -1,5 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Queries.HardwareQueries where
+module Queries.HardwareQueries(
+    getAllHardwareIO
+) where
 
 import Network.HTTP.Conduit
 import Network.HTTP.Simple
@@ -43,8 +45,9 @@ getHardwareAPI query = do
     return $ getResponseBody response
 
 -- top level interface
-buildAllHardwareQueryIO :: EnvironmentConfig -> IO [HardwareItem]
-buildAllHardwareQueryIO config = do
+getAllHardwareIO :: IO [HardwareItem]
+getAllHardwareIO = do
+    config <- getEnvironmentVars
     hws <- getHardwareAPI $ buildQueryHardware $ fromString $ preview_access_token_sandbox config
     return $ items hws
 

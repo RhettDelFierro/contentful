@@ -1,5 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Queries.GameQueries where
+module Queries.GameQueries(
+    getAllGamesIO
+) where
 
 import Network.HTTP.Conduit
 import Network.HTTP.Simple
@@ -43,7 +45,8 @@ getGamesAPI query = do
     return $ getResponseBody response
 
 -- top level interface
-buildAllGamesQueryIO :: EnvironmentConfig -> IO [GameItem]
-buildAllGamesQueryIO config = do
-    gs <- getGamesAPI $ buildQueryHardware $ fromString $ preview_access_token_sandbox config
+getAllGamesIO :: IO [GameItem]
+getAllGamesIO = do
+    config <- getEnvironmentVars
+    gs <- getGamesAPI $ buildQueryGames $ fromString $ preview_access_token_sandbox config
     return $ items gs

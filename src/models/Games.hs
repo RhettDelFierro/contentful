@@ -26,8 +26,8 @@ instance FromJSON AllGamesQuery where
     parseJSON _          = mzero
 
 data GameItem = GameItem {
-  hardwareSys :: SysItem
-  , hardwareItemFields :: GameField
+  gameItemSys :: SysItem
+  , gameItemFields :: GameField
 } deriving (Show, Eq)
 
 instance FromJSON GameItem where
