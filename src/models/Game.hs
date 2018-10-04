@@ -24,14 +24,14 @@ data GameField = GameField {
   , exploreMoreLink :: Maybe String
   , numberOfPlayers :: Maybe String
   , supportedLanguages :: Maybe [String]
-  , platforms :: Maybe [SysLink]
-  , ratings :: Maybe [SysLink]
-  , ratingDescriptions :: Maybe [SysLink]
+  , platforms :: Maybe [Maybe (LinkType String)]
+  , ratings :: Maybe [Maybe (LinkType String)]
+  , ratingDescriptions :: Maybe [Maybe (LinkType String)]
   , minimumHardwareSpecifications :: Maybe (LinkType String)
   , launcherIcon :: Maybe (LinkType String)
   , launcherLogo :: Maybe (LinkType String)
   , patchNotesImage :: Maybe SysLink
-  , launcherFilters :: Maybe [SysLink]
+  , launcherFilters :: Maybe [Maybe (LinkType String)]
   , orderLink :: Maybe String
   , launchInstallBackground :: Maybe (LinkType String)
   , launchInstallHero :: Maybe (LinkType String)
@@ -50,14 +50,14 @@ instance FromJSON GameField where
                       <*> (o .:? "exploreMoreLink")
                       <*> (o .:? "numberOfPlayers")
                       <*> (o .:? "supportedLanguages")
-                      <*> (o .:? "platforms")
-                      <*> (o .:? "ratings")
-                      <*> (o .:? "ratingDescriptions")
+                      <*> (fmap . fmap . fmap) convertLinkType (o .:? "platforms")
+                      <*> (fmap . fmap . fmap) convertLinkType (o .:? "ratings")
+                      <*> (fmap . fmap . fmap) convertLinkType (o .:? "ratingDescriptions")
                       <*> (convertLinkType <$> o .:? "minimumHardwareSpecifications")
                       <*> (convertLinkType <$> o .:? "launcherIcon")
                       <*> (convertLinkType <$> o .:? "launcherLogo")
                       <*> (o .:? "patchNotesImage")
-                      <*> (o .:? "launcherFilters")
+                      <*> (fmap . fmap . fmap) convertLinkType (o .:? "launcherFilters")
                       <*> (o .:? "orderLink")
                       <*> (convertLinkType <$> o .:? "launchInstallBackground")
                       <*> (convertLinkType <$> o .:? "launchInstallHero")
