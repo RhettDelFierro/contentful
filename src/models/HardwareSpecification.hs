@@ -8,22 +8,6 @@ import Data.Aeson
 import Data.Time.Clock
 import Data.Time.Format
 
-data AllHardwareSpecificationQuery = AllHardwareSpecificationQuery {
-  topSys :: SysLink
-  , total    :: Integer
-  , skip     :: Integer
-  , limit    :: Integer
-  , items    :: [HardwareSpecificationItem]
-} deriving (Show, Eq)
-
-instance FromJSON AllHardwareSpecificationQuery where
-    parseJSON (Object o) =
-      AllHardwareSpecificationQuery <$> (o .: "sys")
-                       <*> (o .: "total")
-                       <*> (o .: "skip")
-                       <*> (o .: "limit")
-                       <*> (o .: "items")
-    parseJSON _          = mzero
 
 data HardwareSpecificationItem = HardwareSpecificationItem {
   sys :: SysItem

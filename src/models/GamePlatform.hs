@@ -8,23 +8,6 @@ import Data.Aeson
 import Data.Time.Clock
 import Data.Time.Format
 
-data AllGamePlatformQuery = AllGamePlatformQuery {
-  topSys :: SysLink
-  , total    :: Integer
-  , skip     :: Integer
-  , limit    :: Integer
-  , items    :: [GamePlatformItem]
-} deriving (Show, Eq)
-
-instance FromJSON AllGamePlatformQuery where
-    parseJSON (Object o) =
-      AllGamePlatformQuery <$> (o .: "sys")
-                           <*> (o .: "total")
-                           <*> (o .: "skip")
-                           <*> (o .: "limit")
-                           <*> (o .: "items")
-    parseJSON _          = mzero
-
 data GamePlatformItem = GamePlatformItem {
   sys :: SysItem
   , fields :: GamePlatformField

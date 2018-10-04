@@ -8,22 +8,6 @@ import Data.Aeson
 import Data.Time.Clock
 import Data.Time.Format
 
-data AllPatchNoteQuery = AllPatchNoteQuery {
-  topSys :: SysLink
-  , total    :: Integer
-  , skip     :: Integer
-  , limit    :: Integer
-  , items    :: [PatchNoteItem]
-} deriving (Show, Eq)
-
-instance FromJSON AllPatchNoteQuery where
-    parseJSON (Object o) =
-      AllPatchNoteQuery <$> (o .: "sys")
-                        <*> (o .: "total")
-                        <*> (o .: "skip")
-                        <*> (o .: "limit")
-                        <*> (o .: "items")
-    parseJSON _          = mzero
 
 data PatchNoteItem = PatchNoteItem {
   sys :: SysItem

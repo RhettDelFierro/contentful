@@ -45,43 +45,35 @@ getEnvironmentVars = do
     space_sandbox <- getEnv "SPACE_CONTENTFUL"
     return $ EnvironmentConfig token_prod space_prod token_sandbox space_sandbox
 
-getGameAPI :: [(ByteString, Maybe ByteString)] -> IO (AllContentfulQuery AllGameQuery)
+getGameAPI :: [(ByteString, Maybe ByteString)] -> IO (AllContentfulQuery GameItem)
 getGameAPI query = do
     let request = setQueryString query makeUrlFromSpace
     response <- httpJSON request
     return $ getResponseBody response
 
-
-getAllGameIO :: IO (AllContentfulQuery AllGameQuery)
+getAllGameIO :: IO [GameItem]
 getAllGameIO = do
     config <- getEnvironmentVars
-    getGameAPI $ buildQueryGame $ fromString $ preview_access_token_sandbox config
+    gs <- getGameAPI $ buildQueryGame $ fromString $ preview_access_token_sandbox config
     -- undefined
-    -- return $ items <$> gs
+    return $ items gs
 
+getMultipleGameIO :: IO [[GameItem]]
+getMultipleGameIO = do
+    config <- getEnvironmentVars
+    gs <- mapConcurrently getGameAPI $ buildQueryGameLocales (fromString (preview_access_token_sandbox config)) <$> allLocales
+    let a = items <$> gs -- :: [[GameItem]]
+    undefined
 
--- top level interface
--- getAllGameIO :: IO [GameItem]
--- getAllGameIO = do
---     config <- getEnvironmentVars
---     gs <- getGameAPI $ buildQueryGame $ fromString $ preview_access_token_sandbox config
---     return $ items gs
+data TranslationNeeded a = TranslationNeeded {
+    locale :: String
+  , translationNeeded :: a 
+}
 
--- getMultipleGameIO :: IO [[GameItem]]
--- getMultipleGameIO = do
---     config <- getEnvironmentVars
---     gs <- mapConcurrently getGameAPI $ buildQueryGameLocales (fromString (preview_access_token_sandbox config)) <$> allLocales
---     let a = items <$> gs -- :: [[GameItem]]
---     undefined
+checkField :: String -> GameItem -> (Maybe (TranslationNeeded a))
+checkField lang itm = undefined
 
--- data TranslationNeeded a = TranslationNeeded {
---     locale :: String
---   , translationNeeded :: a 
--- }
-
--- checkField :: String -> GameItem -> Maybe TranslationNeeded a
--- checkField lang itm = 
-
--- findNoField :: [[GameItem]] -> [Maybe [TranslationNeeded]]
+findNoField :: [[GameItem]] -> [Maybe [TranslationNeeded a]]
+findNoField [eng:gs] = undefined
 -- findNoField [eng:gs] = map filterField gs
 --   where filterField [others] = 

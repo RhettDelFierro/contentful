@@ -8,23 +8,6 @@ import Data.Aeson
 import Data.Time.Clock
 import Data.Time.Format
 
-data AllDeveloperQuery = AllDeveloperQuery {
-  topSys :: SysLink
-  , total    :: Integer
-  , skip     :: Integer
-  , limit    :: Integer
-  , items    :: [DeveloperItem]
-} deriving (Show, Eq)
-
-instance FromJSON AllDeveloperQuery where
-    parseJSON (Object o) =
-      AllDeveloperQuery <$> (o .: "sys")
-                        <*> (o .: "total")
-                        <*> (o .: "skip")
-                        <*> (o .: "limit")
-                        <*> (o .: "items")
-    parseJSON _          = mzero
-
 data DeveloperItem = DeveloperItem {
   sys :: SysItem
   , fields :: DeveloperField

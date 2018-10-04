@@ -13,7 +13,7 @@ import Data.Monoid
 import System.Environment (getEnv)
 import Control.Applicative
 
-
+import Models.GlobalModels
 import Models.HardwareSpecification
 
 import Queries.GameQueries(getAllGameIO)
@@ -40,7 +40,7 @@ getEnvironmentVars = do
     space_sandbox <- getEnv "SPACE_CONTENTFUL"
     return $ EnvironmentConfig token_prod space_prod token_sandbox space_sandbox
 
-getHardwareSpecificationAPI :: [(ByteString, Maybe ByteString)] -> IO AllHardwareSpecificationQuery
+getHardwareSpecificationAPI :: [(ByteString, Maybe ByteString)] -> IO (AllContentfulQuery HardwareSpecificationItem)
 getHardwareSpecificationAPI query = do
     let request = setQueryString query makeUrlFromSpace
     response <- httpJSON request

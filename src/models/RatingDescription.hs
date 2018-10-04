@@ -8,22 +8,6 @@ import Data.Aeson
 import Data.Time.Clock
 import Data.Time.Format
 
-data AllRatingDescriptionQuery = AllRatingDescriptionQuery {
-  topSys :: SysLink
-  , total    :: Integer
-  , skip     :: Integer
-  , limit    :: Integer
-  , items    :: [RatingDescriptionItem]
-} deriving (Show, Eq)
-
-instance FromJSON AllRatingDescriptionQuery where
-    parseJSON (Object o) =
-      AllRatingDescriptionQuery <$> (o .: "sys")
-                                <*> (o .: "total")
-                                <*> (o .: "skip")
-                                <*> (o .: "limit")
-                                <*> (o .: "items")
-    parseJSON _          = mzero
 
 data RatingDescriptionItem = RatingDescriptionItem {
   sys :: SysItem

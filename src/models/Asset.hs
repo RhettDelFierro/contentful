@@ -8,22 +8,6 @@ import Data.Aeson
 import Data.Time.Clock
 import Data.Time.Format
 
-data AllAssetQuery = AllAssetQuery {
-  topSys :: SysLink
-  , total    :: Integer
-  , skip     :: Integer
-  , limit    :: Integer
-  , items    :: [AssetItem]
-} deriving (Show, Eq)
-
-instance FromJSON AllAssetQuery where
-    parseJSON (Object o) =
-      AllAssetQuery <$> (o .: "sys")
-                        <*> (o .: "total")
-                        <*> (o .: "skip")
-                        <*> (o .: "limit")
-                        <*> (o .: "items")
-    parseJSON _          = mzero
 
 data AssetItem = AssetItem {
   sys :: SysItem

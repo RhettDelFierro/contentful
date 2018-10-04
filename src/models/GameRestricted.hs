@@ -8,22 +8,6 @@ import Data.Aeson
 import Data.Time.Clock
 import Data.Time.Format
 
-data AllGameRestrictedQuery = AllGameRestrictedQuery {
-  topSys :: SysLink
-  , total    :: Integer
-  , skip     :: Integer
-  , limit    :: Integer
-  , items    :: [GameRestrictedItem]
-} deriving (Show, Eq)
-
-instance FromJSON AllGameRestrictedQuery where
-    parseJSON (Object o) =
-      AllGameRestrictedQuery <$> (o .: "sys")
-                             <*> (o .: "total")
-                             <*> (o .: "skip")
-                             <*> (o .: "limit")
-                             <*> (o .: "items")
-    parseJSON _          = mzero
 
 data GameRestrictedItem = GameRestrictedItem {
   sys :: SysItem

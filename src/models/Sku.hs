@@ -8,22 +8,6 @@ import Data.Aeson
 import Data.Time.Clock
 import Data.Time.Format
 
-data AllSkuQuery = AllSkuQuery {
-  topSys :: SysLink
-  , total    :: Integer
-  , skip     :: Integer
-  , limit    :: Integer
-  , items    :: [SkuItem]
-} deriving (Show, Eq)
-
-instance FromJSON AllSkuQuery where
-    parseJSON (Object o) =
-      AllSkuQuery <$> (o .: "sys")
-                  <*> (o .: "total")
-                  <*> (o .: "skip")
-                  <*> (o .: "limit")
-                  <*> (o .: "items")
-    parseJSON _          = mzero
 
 data SkuItem = SkuItem {
   sys :: SysItem
