@@ -16,6 +16,8 @@ import Control.Applicative
 
 import Models.HardwareSpecification
 
+import Queries.GameQueries(getAllGameIO)
+
 data EnvironmentConfig = EnvironmentConfig {
       preview_access_token_prod :: EnvironmentValue
     , space_contentful_launcher_prod :: EnvironmentValue
@@ -50,6 +52,13 @@ getAllHardwareSpecificationIO = do
     config <- getEnvironmentVars
     hws <- getHardwareSpecificationAPI $ buildQueryHardwareSpecification $ fromString $ preview_access_token_sandbox config
     return $ items hws
+
+-- findMatches :: IO [a]
+-- findMatches = do
+--     hwis <- getAllHardwareSpecificationIO
+--     gs <- getAllGameIO
+--     undefined
+
 
 -- printEach :: IO ()
 -- printEach = do

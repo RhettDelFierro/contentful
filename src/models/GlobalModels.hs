@@ -6,6 +6,22 @@ import Data.Aeson
 import Data.Time.Clock
 import Data.Time.Format
 
+data AllContentfulQuery a = AllContentfulQuery {
+    topSys :: SysLink
+  , total    :: Integer
+  , skip     :: Integer
+  , limit    :: Integer
+  , items    :: [a]
+} deriving (Show, Eq)
+
+instance (FromJSON a) => FromJSON (AllContentfulQuery a) where
+    parseJSON (Object o) = 
+        AllContentfulQuery <$> (o .: "sys")
+                           <*> (o .: "total")
+                           <*> (o .: "skip")
+                           <*> (o .: "limit")
+                           <*> (o .: "items")
+
 data SysLink = SysLink {
         sysLinkType     :: String,
         sysLinkLinkType :: String,

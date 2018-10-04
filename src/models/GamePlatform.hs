@@ -19,10 +19,10 @@ data AllGamePlatformQuery = AllGamePlatformQuery {
 instance FromJSON AllGamePlatformQuery where
     parseJSON (Object o) =
       AllGamePlatformQuery <$> (o .: "sys")
-                            <*> (o .: "total")
-                            <*> (o .: "skip")
-                            <*> (o .: "limit")
-                            <*> (o .: "items")
+                           <*> (o .: "total")
+                           <*> (o .: "skip")
+                           <*> (o .: "limit")
+                           <*> (o .: "items")
     parseJSON _          = mzero
 
 data GamePlatformItem = GamePlatformItem {
