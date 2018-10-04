@@ -10,6 +10,7 @@ import Data.Foldable (foldl)
 import Data.Monoid
 import Control.Applicative
 
+import Global.GlobalSys
 import Models.GlobalModels
 import Models.HardwareSpecification
 
@@ -24,6 +25,12 @@ getHardwareSpecificationAPI query = do
     let request = setQueryString query makeUrlFromSpace
     response <- httpJSON request
     return $ getResponseBody response
+
+getAllHardwareSpecificationIO :: IO [HardwareSpecificationItem]
+getAllHardwareSpecificationIO = do
+    config <- getEnvironmentVars
+    hws <- getHardwareSpecificationAPI $ buildQueryHardwareSpecification $ fromString $ preview_access_token_sandbox config
+    return $ items hws
 
 -- top level interface
 

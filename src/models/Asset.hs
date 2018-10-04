@@ -7,14 +7,12 @@ import Data.Aeson
 import Data.Time.Clock
 import Data.Time.Format
 
-data AssetFileDetailsImage = 
-    AssetFileDetailsImage {
+data AssetFileDetailsImage = AssetFileDetailsImage {
       width :: Integer
     , height :: Integer
     } deriving (Show, Eq)
 
-data AssetFileDetails = 
-    AssetFileDetails {
+data AssetFileDetails = AssetFileDetails {
       size :: Integer
     , image :: AssetFileDetailsImage
     } deriving (Show, Eq)

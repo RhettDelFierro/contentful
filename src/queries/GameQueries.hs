@@ -11,6 +11,7 @@ import Data.Foldable (foldl)
 import Data.Monoid
 import Control.Applicative
 
+import Global.GlobalSys
 import Models.GlobalModels
 import Models.Game
 
@@ -26,22 +27,25 @@ buildQueryGame token = [("access_token", Just token), ("content_type", Just "gam
 buildQueryGameLocales :: ByteString -> ByteString -> [(ByteString, Maybe ByteString)]
 buildQueryGameLocales token locale = [("access_token", Just token), ("content_type", Just "game"), ("content_type", Just locale)]
 
-
-
 getGameAPI :: [(ByteString, Maybe ByteString)] -> IO (AllContentfulQuery GameItem)
 getGameAPI query = do
     let request = setQueryString query makeUrlFromSpace
     response <- httpJSON request
     return $ getResponseBody response
 
+getAllGameIO :: IO [GameItem]
+getAllGameIO = do
+    config <- getEnvironmentVars
+    gs <- getGameAPI $ buildQueryGame $ fromString $ preview_access_token_sandbox config
+    -- undefined
+    return $ items gs
 
--- getMultipleGameIO :: IO [[GameItem]]
--- getMultipleGameIO = do
---     config <- getEnvironmentVars
---     gs <- mapConcurrently getGameAPI $ buildQueryGameLocales (fromString (preview_access_token_sandbox config)) <$> allLocales
---     let a = items <$> gs -- :: [[GameItem]]
---     undefined
-
+getMultipleGameIO :: IO [[GameItem]]
+getMultipleGameIO = do
+    config <- getEnvironmentVars
+    gs <- mapConcurrently getGameAPI $ buildQueryGameLocales (fromString (preview_access_token_sandbox config)) <$> allLocales
+    let a = items <$> gs -- :: [[GameItem]]
+    undefined
 data TranslationNeeded a = TranslationNeeded {
     locale :: String
   , translationNeeded :: a 
