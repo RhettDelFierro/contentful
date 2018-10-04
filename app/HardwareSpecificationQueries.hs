@@ -4,5 +4,5 @@ import Lib
 
 main :: IO ()
 main = do
-    getAllHardwareSpecificationIO
-    return ()
+    ios <- getAllHardwareSpecificationIO
+    print ios

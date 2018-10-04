@@ -4,5 +4,5 @@ import Lib
 
 main :: IO ()
 main = do
-    getAllGameIO
-    return ()
+    gs <- getAllGameIO
+    print gs

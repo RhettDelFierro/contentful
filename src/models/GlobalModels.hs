@@ -1,4 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE RecordWildCards #-}
+{-# LANGUAGE DuplicateRecordFields #-}
 module Models.GlobalModels where
 
 import Control.Monad
@@ -23,10 +25,22 @@ instance (FromJSON a) => FromJSON (AllContentfulQuery a) where
                            <*> (o .: "items")
 
 data SysLink = SysLink {
-        sysLinkType     :: String,
-        sysLinkLinkType :: String,
-        sysLinkID       :: String
+        type_     :: Maybe String,
+        linkType  :: Maybe String,
+        id        :: Maybe String
 } deriving (Show, Eq)
+
+-- a is the id
+data LinkType a = Space a | Environment a | ContentType a | Asset a | Entry a deriving (Show, Eq)
+
+convertLinkType :: Maybe SysLink -> (Maybe (LinkType String))
+convertLinkType (Just (SysLink (Just "Link") (Just "Environment") (Just id) )) = Just $ Environment id
+convertLinkType (Just (SysLink (Just "Link") (Just "ContentType") (Just id))) = Just $ ContentType id
+convertLinkType (Just (SysLink (Just "Link") (Just "Asset") (Just id))) = Just $ Asset id
+convertLinkType (Just (SysLink (Just "Link") (Just "Entry") (Just id))) = Just $ Entry id
+convertLinkType (Just (SysLink (Just "Link") (Just "Space") (Just id))) = Just $ Space id
+convertLinkType _ = Nothing
+
 
 data SysItem = SysItem {
   space :: SysLink
@@ -47,21 +61,21 @@ instance FromJSON SysItem where
                 <*> (o .: "id")
                 <*> ((o .: "contentType") >>= (.: "sys"))
                 <*> (o .: "revision")
-                <*> (parseContentfulTime <$> o .: "createdAt")
-                <*> (parseContentfulTime <$> o .: "updatedAt")
+                <*> (o .: "createdAt")
+                <*> (o .: "updatedAt")
                 <*> ((o .: "environment") >>= (.: "sys"))
                 <*> (o .: "locale")
     parseJSON _          = mzero
 
 instance FromJSON SysLink where
-    parseJSON (Object o) =
-        SysLink <$> ((o .: "sys") >>= (.: "type"))
-                <*> ((o .: "sys") >>= (.: "linkType"))
-                <*> ((o .: "sys") >>= (.: "id"))
-    parseJSON _          = mzero
+    parseJSON = withObject "sys" $ \o -> do
+        type_    <- o .:? "type"
+        linkType <- o .:? "linkType"
+        id       <- o .:? "id"
+        return SysLink{..}
 
-parseContentfulTime :: String -> UTCTime
-parseContentfulTime t =
-    case parseTimeM True defaultTimeLocale "%F" t of
-    Just d -> d
-    Nothing -> error "could not parse date"
+-- parseContentfulTime :: String -> UTCTime
+-- parseContentfulTime t =
+--     case parseTimeM True defaultTimeLocale "%F" t of
+--     Just d -> d
+--     Nothing -> error "could not parse date"

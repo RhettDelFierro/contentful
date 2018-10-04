@@ -1,4 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE RecordWildCards #-}
 
 module Models.HardwareSpecification where
 
@@ -19,40 +20,61 @@ instance FromJSON HardwareSpecificationItem where
     parseJSON _          = mzero
 
 data HardwareSpecificationField = HardwareSpecificationField {
-  title :: String
-  , cpu :: String
-  , os :: String
-  , gpu :: String
-  , freeDiskSpace :: Integer
-  , osBit :: Integer
-  , cpuLogicalCores :: Integer
-  , cpuMemory :: Integer
-  , cpuPowerIntel :: Integer
-  , cpuPowerAmd :: Integer
-  , gpuMemoryNvidia :: Integer
-  , gpuPowerNvidia :: Integer
-  , gpuMemoryAmd :: Integer
-  , gpuPowerAmd :: Integer
-  , gpuMemoryIntel :: Integer
-  , gpuPowerIntel :: Integer
+  title :: Maybe String
+  , cpu :: Maybe String
+  , os :: Maybe String
+  , gpu :: Maybe String
+  , freeDiskSpace :: Maybe Integer
+  , osBit :: Maybe Integer
+  , cpuLogicalCores :: Maybe Integer
+  , cpuMemory :: Maybe Integer
+  , cpuPowerIntel :: Maybe Integer
+  , cpuPowerAmd :: Maybe Integer
+  , gpuMemoryNvidia :: Maybe Integer
+  , gpuPowerNvidia :: Maybe Integer
+  , gpuMemoryAmd :: Maybe Integer
+  , gpuPowerAmd :: Maybe Integer
+  , gpuMemoryIntel :: Maybe Integer
+  , gpuPowerIntel :: Maybe Integer
 } deriving (Show,Eq)
 
 instance FromJSON HardwareSpecificationField where
     parseJSON (Object o) = 
-        HardwareSpecificationField <$> (o .: "title") 
-                      <*> (o .: "cpu")
-                      <*> (o .: "os")
-                      <*> (o .: "gpu")
-                      <*> (o .: "freeDiskSpace")
-                      <*> (o .: "osBit")
-                      <*> (o .: "cpuLogicalCores")
-                      <*> (o .: "cpuMemory")
-                      <*> (o .: "cpuPowerIntel")
-                      <*> (o .: "cpuPowerAmd")
-                      <*> (o .: "gpuMemoryNvidia")
-                      <*> (o .: "gpuPowerNvidia")
-                      <*> (o .: "gpuMemoryAmd")
-                      <*> (o .: "gpuPowerAmd")
-                      <*> (o .: "gpuMemoryIntel")
-                      <*> (o .: "gpuPowerIntel")
+        HardwareSpecificationField <$> (o .:? "title") 
+                      <*> (o .:? "cpu")
+                      <*> (o .:? "os")
+                      <*> (o .:? "gpu")
+                      <*> (o .:? "freeDiskSpace")
+                      <*> (o .:? "osBit")
+                      <*> (o .:? "cpuLogicalCores")
+                      <*> (o .:? "cpuMemory")
+                      <*> (o .:? "cpuPowerIntel")
+                      <*> (o .:? "cpuPowerAmd")
+                      <*> (o .:? "gpuMemoryNvidia")
+                      <*> (o .:? "gpuPowerNvidia")
+                      <*> (o .:? "gpuMemoryAmd")
+                      <*> (o .:? "gpuPowerAmd")
+                      <*> (o .:? "gpuMemoryIntel")
+                      <*> (o .:?  "gpuPowerIntel")
     parseJSON _          = mzero
+
+-- instance FromJSON HardwareSpecificationField where
+--     parseJSON (Object o) = do
+--         title           <- o .: "title"
+--         cpu             <- o .: "cpu"
+--         os              <- o .: "os"
+--         gpu             <- o .: "gpu"
+--         freeDiskSpace   <- o .: "freeDiskSpace"
+--         osBit           <- o .: "osBit"
+--         cpuLogicalCores <- o .: "cpuLogicalCores"
+--         cpuMemory       <- o .:? "cpuMemory"
+--         cpuPowerIntel   <- o .:? "cpuPowerIntel"
+--         cpuPowerAmd   <- o .:? "cpuPowerAmd"
+--         gpuMemoryNvidia <- o .:? "gpuMemoryNvidia"
+--         gpuPowerNvidia  <- o .:? "gpuPowerNvidia"
+--         gpuMemoryAmd <- o .:? "gpuMemoryAmd"
+--         gpuPowerAmd  <- o .:? "gpuPowerAmd"
+--         gpuMemoryIntel <- o .:? "gpuMemoryIntel"
+--         gpuPowerIntel  <- o .:?  "gpuPowerIntel"
+--         return HardwareSpecificationField{..}
+ 

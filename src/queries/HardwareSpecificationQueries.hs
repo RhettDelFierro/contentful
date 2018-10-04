@@ -32,6 +32,12 @@ getAllHardwareSpecificationIO = do
     hws <- getHardwareSpecificationAPI $ buildQueryHardwareSpecification $ fromString $ preview_access_token_sandbox config
     return $ items hws
 
+-- getAllHardwareSpecificationIO :: IO [Maybe Integer]
+-- getAllHardwareSpecificationIO = do
+--     config <- getEnvironmentVars
+--     hws <- getHardwareSpecificationAPI $ buildQueryHardwareSpecification $ fromString $ preview_access_token_sandbox config
+--     return $ map cpuPowerIntel $ fields <$> items hws
+    -- undefined
 -- top level interface
 
 

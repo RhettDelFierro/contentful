@@ -44,8 +44,8 @@ getMultipleGameIO :: IO [[GameItem]]
 getMultipleGameIO = do
     config <- getEnvironmentVars
     gs <- mapConcurrently getGameAPI $ buildQueryGameLocales (fromString (preview_access_token_sandbox config)) <$> allLocales
-    let a = items <$> gs -- :: [[GameItem]]
-    undefined
+    return $ items <$> gs
+ 
 data TranslationNeeded a = TranslationNeeded {
     locale :: String
   , translationNeeded :: a 
@@ -54,7 +54,7 @@ data TranslationNeeded a = TranslationNeeded {
 checkField :: String -> GameItem -> Maybe (TranslationNeeded a)
 checkField lang itm = undefined
 
-findNoField :: [[GameItem]] -> [Maybe [TranslationNeeded a]]
-findNoField [eng:gs] = undefined
+-- findNoField :: [[GameItem]] -> [Maybe [TranslationNeeded a]]
+-- findNoField [eng:gs] = map (description . fields) gs
 -- findNoField [eng:gs] = map filterField gs
 --   where filterField [others] = 
