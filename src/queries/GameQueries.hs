@@ -1,5 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Queries.HardwareQueries where
+module Queries.GameQueries where
 
 import Network.HTTP.Conduit
 import Network.HTTP.Simple
@@ -12,7 +12,7 @@ import System.Environment (getEnv)
 import Control.Applicative
 
 
-import Models.Hardware
+import Models.Games
 
 data EnvironmentConfig = EnvironmentConfig {
       preview_access_token_prod :: EnvironmentValue
@@ -22,11 +22,11 @@ data EnvironmentConfig = EnvironmentConfig {
 }
 type EnvironmentValue = String
 
-makeUrlFromSpace :: Request
+makeUrlFromSpace :: Request --sandbox
 makeUrlFromSpace = "GET https://preview.contentful.com/spaces/52kyweqkx3gp/environments/master/entries?"
 
-buildQueryHardware :: ByteString -> [(ByteString, Maybe ByteString)]
-buildQueryHardware token = [("access_token", Just token), ("content_type", Just "hardwareSpecification")]
+buildQueryGames :: ByteString -> [(ByteString, Maybe ByteString)]
+buildQueryGames token = [("access_token", Just token), ("content_type", Just "game")]
 
 getEnvironmentVars :: IO EnvironmentConfig
 getEnvironmentVars = do 
@@ -36,22 +36,14 @@ getEnvironmentVars = do
     space_sandbox <- getEnv "SPACE_CONTENTFUL"
     return $ EnvironmentConfig token_prod space_prod token_sandbox space_sandbox
 
-getHardwareAPI :: [(ByteString, Maybe ByteString)] -> IO AllHardwareQuery
-getHardwareAPI query = do
+getGamesAPI :: [(ByteString, Maybe ByteString)] -> IO AllGamesQuery
+getGamesAPI query = do
     let request = setQueryString query makeUrlFromSpace
     response <- httpJSON request
     return $ getResponseBody response
 
 -- top level interface
-buildAllHardwareQueryIO :: EnvironmentConfig -> IO [HardwareItem]
-buildAllHardwareQueryIO config = do
-    hws <- getHardwareAPI $ buildQueryHardware $ fromString $ preview_access_token_sandbox config
-    return $ items hws
-
--- printEach :: IO ()
--- printEach = do
---     hwis <- buildQueryIO
---     let hfs = hardwareItemFields <$> hwis
---         titles = title <$> hfs
---         ps = print <$> titles
---     return ()
+buildAllGamesQueryIO :: EnvironmentConfig -> IO [GameItem]
+buildAllGamesQueryIO config = do
+    gs <- getGamesAPI $ buildQueryHardware $ fromString $ preview_access_token_sandbox config
+    return $ items gs
