@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Queries.GameQueries(
-    getAllGamesIO
+    getAllGameIO
 ) where
 
 import Network.HTTP.Conduit
@@ -14,7 +14,7 @@ import System.Environment (getEnv)
 import Control.Applicative
 
 
-import Models.Games
+import Models.Game
 
 data EnvironmentConfig = EnvironmentConfig {
       preview_access_token_prod :: EnvironmentValue
@@ -27,8 +27,8 @@ type EnvironmentValue = String
 makeUrlFromSpace :: Request --sandbox
 makeUrlFromSpace = "GET https://preview.contentful.com/spaces/52kyweqkx3gp/environments/master/entries?"
 
-buildQueryGames :: ByteString -> [(ByteString, Maybe ByteString)]
-buildQueryGames token = [("access_token", Just token), ("content_type", Just "game")]
+buildQueryGame :: ByteString -> [(ByteString, Maybe ByteString)]
+buildQueryGame token = [("access_token", Just token), ("content_type", Just "game")]
 
 getEnvironmentVars :: IO EnvironmentConfig
 getEnvironmentVars = do 
@@ -38,15 +38,15 @@ getEnvironmentVars = do
     space_sandbox <- getEnv "SPACE_CONTENTFUL"
     return $ EnvironmentConfig token_prod space_prod token_sandbox space_sandbox
 
-getGamesAPI :: [(ByteString, Maybe ByteString)] -> IO AllGamesQuery
-getGamesAPI query = do
+getGameAPI :: [(ByteString, Maybe ByteString)] -> IO AllGameQuery
+getGameAPI query = do
     let request = setQueryString query makeUrlFromSpace
     response <- httpJSON request
     return $ getResponseBody response
 
 -- top level interface
-getAllGamesIO :: IO [GameItem]
-getAllGamesIO = do
+getAllGameIO :: IO [GameItem]
+getAllGameIO = do
     config <- getEnvironmentVars
-    gs <- getGamesAPI $ buildQueryGames $ fromString $ preview_access_token_sandbox config
+    gs <- getGameAPI $ buildQueryGame $ fromString $ preview_access_token_sandbox config
     return $ items gs

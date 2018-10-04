@@ -1,5 +1,5 @@
 module Lib ( getAllHardwareSpecificationIO
-           , getAllGamesIO
+           , getAllGameIO
 ) where
 
 import Queries.HardwareSpecificationQueries

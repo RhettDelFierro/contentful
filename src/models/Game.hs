@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Models.Games where
+module Models.Game where
 
 import Models.GlobalModels (SysItem, SysLink)
 import Control.Monad
@@ -8,7 +8,7 @@ import Data.Aeson
 import Data.Time.Clock
 import Data.Time.Format
 
-data AllGamesQuery = AllGamesQuery {
+data AllGameQuery = AllGameQuery {
   topSys :: SysLink
   , total    :: Integer
   , skip     :: Integer
@@ -16,9 +16,9 @@ data AllGamesQuery = AllGamesQuery {
   , items    :: [GameItem]
 } deriving (Show, Eq)
 
-instance FromJSON AllGamesQuery where
+instance FromJSON AllGameQuery where
     parseJSON (Object o) =
-      AllGamesQuery <$> (o .: "sys")
+      AllGameQuery <$> (o .: "sys")
                        <*> (o .: "total")
                        <*> (o .: "skip")
                        <*> (o .: "limit")
