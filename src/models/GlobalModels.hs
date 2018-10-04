@@ -60,13 +60,6 @@ instance FromJSON SysLink where
                 <*> ((o .: "sys") >>= (.: "id"))
     parseJSON _          = mzero
 
--- data SysFields = SysFields {
---     sys :: SysItem
---     , fields :: ContentfulType
--- }
-
--- data ContentfulType = 
-    
 parseContentfulTime :: String -> UTCTime
 parseContentfulTime t =
     case parseTimeM True defaultTimeLocale "%F" t of

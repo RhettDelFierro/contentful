@@ -1,3 +1,4 @@
 .stack-work/
 contentful.cabal
 *~
+.DS_Store
