@@ -11,7 +11,7 @@ import Data.Foldable (foldl)
 import Data.Monoid
 import Control.Applicative
 
-import Global.GlobalSys
+import Global.GlobalSys (getEnvironmentVars, preview_access_token_sandbox)
 import Models.GlobalModels
 import Models.Game
 
@@ -51,7 +51,7 @@ data TranslationNeeded a = TranslationNeeded {
   , translationNeeded :: a 
 }
 
-checkField :: String -> GameItem -> (Maybe (TranslationNeeded a))
+checkField :: String -> GameItem -> Maybe (TranslationNeeded a)
 checkField lang itm = undefined
 
 findNoField :: [[GameItem]] -> [Maybe [TranslationNeeded a]]
