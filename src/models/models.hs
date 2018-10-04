@@ -1,6 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
-
-module Models.Hardware where
+module Models where
 
 import Control.Monad
 import Data.Aeson

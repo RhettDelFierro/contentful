@@ -3,4 +3,6 @@ module Main where
 import Lib
 
 main :: IO ()
-main = undefined
+main = do
+    getEnvironmentVars >>= buildQueryIO
+    return ()

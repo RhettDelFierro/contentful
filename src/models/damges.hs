@@ -6,3 +6,4 @@ data Locale = Locale {
   , localeName :: String
   , fallbackCode :: String
 } deriving (Show, Eq)
+
