@@ -8,6 +8,11 @@ import Data.Aeson
 import Data.Time.Clock
 import Data.Time.Format
 
+data GameRestrictedField = GameRestrictedField {
+  visibleIfUnowned :: Bool
+  , uuid :: String
+  , favoriteOnDiscovery :: Bool
+} deriving (Show,Eq)
 
 data GameRestrictedItem = GameRestrictedItem {
   sys :: SysItem
@@ -17,12 +22,6 @@ data GameRestrictedItem = GameRestrictedItem {
 instance FromJSON GameRestrictedItem where
     parseJSON (Object o) = GameRestrictedItem <$> (o .: "sys") <*> (o .: "fields")
     parseJSON _          = mzero
-
-data GameRestrictedField = GameRestrictedField {
-  visibleIfUnowned :: Bool
-  , uuid :: String
-  , favoriteOnDiscovery :: Bool
-} deriving (Show,Eq)
 
 instance FromJSON GameRestrictedField where
     parseJSON (Object o) = 
