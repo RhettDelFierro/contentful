@@ -1,6 +1,6 @@
-module Lib ( getAllHardwareIO
+module Lib ( getAllHardwareSpecificationIO
            , getAllGamesIO
 ) where
 
-import Queries.HardwareQueries
+import Queries.HardwareSpecificationQueries
 import Queries.GameQueries

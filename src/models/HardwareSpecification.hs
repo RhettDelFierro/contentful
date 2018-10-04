@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Models.Hardware where
+module Models.HardwareSpecification where
 
 import Models.GlobalModels (SysItem, SysLink)
 import Control.Monad
@@ -8,33 +8,33 @@ import Data.Aeson
 import Data.Time.Clock
 import Data.Time.Format
 
-data AllHardwareQuery = AllHardwareQuery {
+data AllHardwareSpecificationQuery = AllHardwareSpecificationQuery {
   topSys :: SysLink
   , total    :: Integer
   , skip     :: Integer
   , limit    :: Integer
-  , items    :: [HardwareItem]
+  , items    :: [HardwareSpecificationItem]
 } deriving (Show, Eq)
 
-instance FromJSON AllHardwareQuery where
+instance FromJSON AllHardwareSpecificationQuery where
     parseJSON (Object o) =
-      AllHardwareQuery <$> (o .: "sys")
+      AllHardwareSpecificationQuery <$> (o .: "sys")
                        <*> (o .: "total")
                        <*> (o .: "skip")
                        <*> (o .: "limit")
                        <*> (o .: "items")
     parseJSON _          = mzero
 
-data HardwareItem = HardwareItem {
+data HardwareSpecificationItem = HardwareSpecificationItem {
   sys :: SysItem
-  , fields :: HardwareField
+  , fields :: HardwareSpecificationField
 } deriving (Show, Eq)
 
-instance FromJSON HardwareItem where
-    parseJSON (Object o) = HardwareItem <$> (o .: "sys") <*> (o .: "fields")
+instance FromJSON HardwareSpecificationItem where
+    parseJSON (Object o) = HardwareSpecificationItem <$> (o .: "sys") <*> (o .: "fields")
     parseJSON _          = mzero
 
-data HardwareField = HardwareField {
+data HardwareSpecificationField = HardwareSpecificationField {
   title :: String
   , cpu :: String
   , os :: String
@@ -53,9 +53,9 @@ data HardwareField = HardwareField {
   , gpuPowerIntel :: Integer
 } deriving (Show,Eq)
 
-instance FromJSON HardwareField where
+instance FromJSON HardwareSpecificationField where
     parseJSON (Object o) = 
-        HardwareField <$> (o .: "title") 
+        HardwareSpecificationField <$> (o .: "title") 
                       <*> (o .: "cpu")
                       <*> (o .: "os")
                       <*> (o .: "gpu")
