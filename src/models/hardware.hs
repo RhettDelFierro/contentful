@@ -9,7 +9,7 @@ import Data.Time.Clock
 import Data.Time.Format
 
 data AllHardwareQuery = AllHardwareQuery {
-  topHardwareSys :: SysLink
+  topSys :: SysLink
   , total    :: Integer
   , skip     :: Integer
   , limit    :: Integer
@@ -26,8 +26,8 @@ instance FromJSON AllHardwareQuery where
     parseJSON _          = mzero
 
 data HardwareItem = HardwareItem {
-  hardwareSys :: SysItem
-  , hardwareItemFields :: HardwareField
+  sys :: SysItem
+  , fields :: HardwareField
 } deriving (Show, Eq)
 
 instance FromJSON HardwareItem where

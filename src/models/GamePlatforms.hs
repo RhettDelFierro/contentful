@@ -9,7 +9,7 @@ import Data.Time.Clock
 import Data.Time.Format
 
 data AllGamePlatformsQuery = AllGamePlatformsQuery {
-  topGamesSys :: SysLink
+  topSys :: SysLink
   , total    :: Integer
   , skip     :: Integer
   , limit    :: Integer
@@ -26,8 +26,8 @@ instance FromJSON AllGamePlatformsQuery where
     parseJSON _          = mzero
 
 data GamePlatformItem = GamePlatformItem {
-  platformSys :: SysItem
-  , platformItemFields :: GamePlatformField
+  sys :: SysItem
+  , fields :: GamePlatformField
 } deriving (Show, Eq)
 
 instance FromJSON GamePlatformItem where
