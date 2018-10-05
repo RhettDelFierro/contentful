@@ -27,31 +27,31 @@ buildQueryGame token = [("access_token", Just token), ("content_type", Just "gam
 buildQueryGameLocales :: ByteString -> ByteString -> [(ByteString, Maybe ByteString)]
 buildQueryGameLocales token locale = [("access_token", Just token), ("content_type", Just "game"), ("content_type", Just locale)]
 
-getGameAPI :: [(ByteString, Maybe ByteString)] -> IO (AllContentfulQuery GameItem)
+getGameAPI :: [(ByteString, Maybe ByteString)] -> IO (AllContentfulQuery GameField)
 getGameAPI query = do
     let request = setQueryString query makeUrlFromSpace
     response <- httpJSON request
     return $ getResponseBody response
 
-getAllGameIO :: IO [GameItem]
+getAllGameIO :: IO [GameField]
 getAllGameIO = do
     config <- getEnvironmentVars
     gs <- getGameAPI $ buildQueryGame $ fromString $ preview_access_token_sandbox config
-    -- undefined
-    return $ items gs
+    return $ fields <$> items gs
 
-getMultipleGameIO :: IO [[GameItem]]
+getMultipleGameIO :: IO [[ContentfulItem GameField]]
 getMultipleGameIO = do
     config <- getEnvironmentVars
     gs <- mapConcurrently getGameAPI $ buildQueryGameLocales (fromString (preview_access_token_sandbox config)) <$> allLocales
-    return $ items <$> gs
- 
+    -- return $ map fields $ items <$> gs
+    undefined
+
 data TranslationNeeded a = TranslationNeeded {
     locale :: String
   , translationNeeded :: a 
 }
 
-checkField :: String -> GameItem -> Maybe (TranslationNeeded a)
+checkField :: String -> (ContentfulItem GameField) -> Maybe (TranslationNeeded a)
 checkField lang itm = undefined
 
 -- findNoField :: [[GameItem]] -> [Maybe [TranslationNeeded a]]

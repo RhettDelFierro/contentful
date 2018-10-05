@@ -1,4 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE DeriveAnyClass #-}
+{-# LANGUAGE DeriveGeneric #-}
 
 module Models.Developer where
 
@@ -18,7 +20,7 @@ instance FromJSON DeveloperItem where
     parseJSON _          = mzero
 
 data DeveloperField = DeveloperField {
-  entryTitle :: String
+    entryTitle :: String
   , name :: String
   , logo :: SysLink
 } deriving (Show,Eq)

@@ -1,6 +1,8 @@
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE DuplicateRecordFields #-}
+{-# LANGUAGE DeriveAnyClass #-}
+{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE RecordWildCards #-}
 module Models.GlobalModels where
 
 import Control.Monad
@@ -8,42 +10,44 @@ import Data.Aeson
 import Data.Time.Clock
 import Data.Time.Format
 
+import GHC.Generics
+
 type MString = Maybe String
+type MInteger = Maybe Integer
 
 data AllContentfulQuery a = AllContentfulQuery {
-    topSys :: SysLink
+    sys :: SysLink
   , total    :: Integer
   , skip     :: Integer
   , limit    :: Integer
-  , items    :: [a]
-} deriving (Show, Eq)
-
-instance (FromJSON a) => FromJSON (AllContentfulQuery a) where
-    parseJSON (Object o) = 
-        AllContentfulQuery <$> (o .: "sys")
-                           <*> (o .: "total")
-                           <*> (o .: "skip")
-                           <*> (o .: "limit")
-                           <*> (o .: "items")
+  , items    :: [ContentfulItem a]
+} deriving (Show, Eq, Generic, FromJSON)
 
 type MSysLink = Maybe SysLink
 data SysLink = SysLink {
-        type_     :: MString,
+        _type     :: MString,
         linkType  :: MString,
         id        :: MString
-} deriving (Show, Eq)
+} deriving (Show, Eq, Generic)
+
+instance FromJSON SysLink where
+    parseJSON = withObject "sys" $ \o -> do
+        _type    <- o .:? "type"
+        linkType <- o .:? "linkType"
+        id       <- o .:? "id"
+        return SysLink{..}
 
 data SysItem = SysItem {
-  space :: MSysLink
-  , sysItemType :: String
-  , sysItemID   :: String
+    space :: MSysLink
+  , _type :: String
+  , id   :: String
   , contentType :: SysLink
   , revision :: Integer
   , createdAt :: UTCTime
   , updatedAt :: UTCTime
   , environment :: MSysLink
   , locale :: String
-} deriving (Show, Eq)
+} deriving (Show, Eq, Generic)
 
 instance FromJSON SysItem where
     parseJSON (Object o) =
@@ -58,13 +62,10 @@ instance FromJSON SysItem where
                 <*> (o .: "locale")
     parseJSON _          = mzero
 
-instance FromJSON SysLink where
-    parseJSON = withObject "sys" $ \o -> do
-        type_    <- o .:? "type"
-        linkType <- o .:? "linkType"
-        id       <- o .:? "id"
-        return SysLink{..}
-
+data ContentfulItem a = ContentfulItem {
+    sys :: SysItem
+    , fields :: a
+} deriving (Show, Eq, Generic, FromJSON)
 -- parseContentfulTime :: String -> UTCTime
 -- parseContentfulTime t =
 --     case parseTimeM True defaultTimeLocale "%F" t of

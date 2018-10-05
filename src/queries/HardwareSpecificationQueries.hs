@@ -20,17 +20,17 @@ makeUrlFromSpace = "GET https://preview.contentful.com/spaces/52kyweqkx3gp/envir
 buildQueryHardwareSpecification :: ByteString -> [(ByteString, Maybe ByteString)]
 buildQueryHardwareSpecification token = [("access_token", Just token), ("content_type", Just "hardwareSpecification")]
 
-getHardwareSpecificationAPI :: [(ByteString, Maybe ByteString)] -> IO (AllContentfulQuery HardwareSpecificationItem)
+getHardwareSpecificationAPI :: [(ByteString, Maybe ByteString)] -> IO (AllContentfulQuery HardwareSpecificationField)
 getHardwareSpecificationAPI query = do
     let request = setQueryString query makeUrlFromSpace
     response <- httpJSON request
     return $ getResponseBody response
 
-getAllHardwareSpecificationIO :: IO [HardwareSpecificationItem]
+getAllHardwareSpecificationIO :: IO [HardwareSpecificationField]
 getAllHardwareSpecificationIO = do
     config <- getEnvironmentVars
     hws <- getHardwareSpecificationAPI $ buildQueryHardwareSpecification $ fromString $ preview_access_token_sandbox config
-    return $ items hws
+    return $ fields <$> items hws
 
 -- getAllHardwareSpecificationIO :: IO [Maybe Integer]
 -- getAllHardwareSpecificationIO = do
