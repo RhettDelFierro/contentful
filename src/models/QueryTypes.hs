@@ -8,7 +8,6 @@ import Control.Monad
 import Data.Aeson
 import Data.Time.Clock
 import Data.Time.Format
-
 import GHC.Generics
 import Models.GlobalModels (MString, MInteger, MSysLink)
 

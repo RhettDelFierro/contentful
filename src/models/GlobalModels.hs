@@ -14,20 +14,43 @@ import GHC.Generics
 
 type MString = Maybe String
 type MInteger = Maybe Integer
+type MSysLink = Maybe SysLink
 
 data AllContentfulQuery a = AllContentfulQuery {
-    sys :: SysLink
+    sys      :: SysLink
   , total    :: Integer
   , skip     :: Integer
   , limit    :: Integer
   , items    :: [ContentfulItem a]
+--   , includes :: Includes a
 } deriving (Show, Eq, Generic, FromJSON)
 
-type MSysLink = Maybe SysLink
+data Includes a = Includes {
+    entry  :: [ContentfulItem a]
+  , assets :: [ContentfulItem a]
+} deriving (Show, Eq, Generic, FromJSON)
+
+data ContentfulItem a = ContentfulItem {
+    sys    :: SysItem
+  , fields :: a
+} deriving (Show, Eq, Generic, FromJSON)
+
+data SysItem = SysItem {
+    space :: MSysLink
+  , _type :: String
+  , id    :: String
+  , contentType :: SysLink
+  , revision    :: Integer
+  , createdAt   :: UTCTime
+  , updatedAt   :: UTCTime
+  , environment :: MSysLink
+  , locale :: String
+} deriving (Show, Eq, Generic)
+
 data SysLink = SysLink {
-        _type     :: MString,
-        linkType  :: MString,
-        id        :: MString
+    _type     :: MString
+  , linkType  :: MString
+  , id        :: MString
 } deriving (Show, Eq, Generic)
 
 instance FromJSON SysLink where
@@ -36,18 +59,6 @@ instance FromJSON SysLink where
         linkType <- o .:? "linkType"
         id       <- o .:? "id"
         return SysLink{..}
-
-data SysItem = SysItem {
-    space :: MSysLink
-  , _type :: String
-  , id   :: String
-  , contentType :: SysLink
-  , revision :: Integer
-  , createdAt :: UTCTime
-  , updatedAt :: UTCTime
-  , environment :: MSysLink
-  , locale :: String
-} deriving (Show, Eq, Generic)
 
 instance FromJSON SysItem where
     parseJSON (Object o) =
@@ -61,11 +72,6 @@ instance FromJSON SysItem where
                 <*> ((o .: "environment") >>= (.: "sys"))
                 <*> (o .: "locale")
     parseJSON _          = mzero
-
-data ContentfulItem a = ContentfulItem {
-    sys :: SysItem
-    , fields :: a
-} deriving (Show, Eq, Generic, FromJSON)
 
 -- parseContentfulTime :: String -> UTCTime
 -- parseContentfulTime t =

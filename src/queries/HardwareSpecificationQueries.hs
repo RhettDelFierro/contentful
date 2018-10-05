@@ -20,10 +20,12 @@ makeUrlFromSpace = "GET https://preview.contentful.com/spaces/52kyweqkx3gp/envir
 buildQueryHardwareSpecification :: ByteString -> [(ByteString, Maybe ByteString)]
 buildQueryHardwareSpecification token = [("access_token", Just token), ("content_type", Just "hardwareSpecification")]
 
+createFullRequest :: [(ByteString, Maybe ByteString)] -> Request
+createFullRequest query = setQueryString query makeUrlFromSpace
+
 getHardwareSpecificationAPI :: [(ByteString, Maybe ByteString)] -> IO (AllContentfulQuery HardwareSpecificationField)
 getHardwareSpecificationAPI query = do
-    let request = setQueryString query makeUrlFromSpace
-    response <- httpJSON request
+    response <- httpJSON $ createFullRequest query
     return $ getResponseBody response
 
 getAllHardwareSpecificationIO :: IO [HardwareSpecificationField]

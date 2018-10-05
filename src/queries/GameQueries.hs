@@ -39,7 +39,7 @@ getAllGameIO = do
     gs <- getGameAPI $ buildQueryGame $ fromString $ preview_access_token_sandbox config
     return $ fields <$> items gs
 
-getMultipleGameIO :: IO [[ContentfulItem GameField]]
+getMultipleGameIO :: IO [[GameField]]
 getMultipleGameIO = do
     config <- getEnvironmentVars
     gs <- mapConcurrently getGameAPI $ buildQueryGameLocales (fromString (preview_access_token_sandbox config)) <$> allLocales
@@ -51,7 +51,7 @@ data TranslationNeeded a = TranslationNeeded {
   , translationNeeded :: a 
 }
 
-checkField :: String -> (ContentfulItem GameField) -> Maybe (TranslationNeeded a)
+checkField :: String -> ContentfulItem GameField -> Maybe (TranslationNeeded a)
 checkField lang itm = undefined
 
 -- findNoField :: [[GameItem]] -> [Maybe [TranslationNeeded a]]
