@@ -66,8 +66,10 @@ data ContentfulItem a = ContentfulItem {
     sys :: SysItem
     , fields :: a
 } deriving (Show, Eq, Generic, FromJSON)
+
 -- parseContentfulTime :: String -> UTCTime
 -- parseContentfulTime t =
 --     case parseTimeM True defaultTimeLocale "%F" t of
 --     Just d -> d
 --     Nothing -> error "could not parse date"
+

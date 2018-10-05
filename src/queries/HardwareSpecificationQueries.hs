@@ -12,7 +12,7 @@ import Control.Applicative
 
 import Global.GlobalSys
 import Models.GlobalModels
-import Models.HardwareSpecification
+import Models.QueryTypes
 
 makeUrlFromSpace :: Request
 makeUrlFromSpace = "GET https://preview.contentful.com/spaces/52kyweqkx3gp/environments/master/entries?"

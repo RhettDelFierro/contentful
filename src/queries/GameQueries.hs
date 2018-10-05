@@ -13,7 +13,7 @@ import Control.Applicative
 
 import Global.GlobalSys (getEnvironmentVars, preview_access_token_sandbox)
 import Models.GlobalModels
-import Models.Game
+import Models.QueryTypes
 
 allLocales :: [ByteString]
 allLocales = map fromString ["en", "fr", "it", "de", "es", "pl", "ru", "pt", "es-419", "ja", "zh-CN", "zh-TW", "ko", "tr"]
