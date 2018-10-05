@@ -1,12 +1,14 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE DeriveGeneric #-}
 
 module Models.Game where
 
-import Models.GlobalModels (convertLinkType, SysItem, SysLink, LinkType)
+import Models.GlobalModels (MString, MSysLink, SysItem)
 import Control.Monad
 import Data.Aeson
 import Data.Time.Clock
 import Data.Time.Format
+import GHC.Generics
 
 data GameItem = GameItem {
   sys :: SysItem
@@ -18,52 +20,28 @@ instance FromJSON GameItem where
     parseJSON _          = mzero
 
 data GameField = GameField {
-  title :: Maybe String
-  , launcherBackground :: Maybe (LinkType String)
-  , description :: Maybe String
-  , exploreMoreLink :: Maybe String
-  , numberOfPlayers :: Maybe String
-  , supportedLanguages :: Maybe [String]
-  , platforms :: Maybe [Maybe (LinkType String)]
-  , ratings :: Maybe [Maybe (LinkType String)]
-  , ratingDescriptions :: Maybe [Maybe (LinkType String)]
-  , minimumHardwareSpecifications :: Maybe (LinkType String)
-  , launcherIcon :: Maybe (LinkType String)
-  , launcherLogo :: Maybe (LinkType String)
-  , patchNotesImage :: Maybe SysLink
-  , launcherFilters :: Maybe [Maybe (LinkType String)]
-  , orderLink :: Maybe String
-  , launchInstallBackground :: Maybe (LinkType String)
-  , launchInstallHero :: Maybe (LinkType String)
-  , launchInstallLogo :: Maybe (LinkType String)
-  , launcherUuid :: Maybe String
-  , visibleIfUnowned :: Maybe Bool
-  , restrictedSettings :: Maybe (LinkType String)
-  , boxArt :: Maybe (LinkType String)
-} deriving (Show,Eq)
+    title :: MString
+  , launcherBackground  :: MSysLink
+  , description         :: MString
+  , exploreMoreLink     :: MString
+  , numberOfPlayers     :: MString
+  , supportedLanguages  :: Maybe [String]
+  , platforms           :: Maybe [MSysLink]
+  , ratings             :: Maybe [MSysLink]
+  , ratingDescriptions  :: Maybe [MSysLink]
+  , minimumHardwareSpecifications :: MSysLink
+  , launcherIcon        :: MSysLink
+  , launcherLogo        :: MSysLink
+  , patchNotesImage     :: MSysLink
+  , launcherFilters     :: Maybe [MSysLink]
+  , orderLink           :: MString
+  , launchInstallBackground :: MSysLink
+  , launchInstallHero   :: MSysLink
+  , launchInstallLogo   :: MSysLink
+  , launcherUuid        :: MString
+  , visibleIfUnowned    :: Maybe Bool
+  , restrictedSettings  :: MSysLink
+  , boxArt              :: MSysLink
+} deriving (Show,Eq, Generic)
 
 instance FromJSON GameField where
-    parseJSON (Object o) = 
-        GameField <$> (o .:? "title") 
-                      <*> (convertLinkType <$> o .:? "launcherBackground")
-                      <*> (o .:? "description")
-                      <*> (o .:? "exploreMoreLink")
-                      <*> (o .:? "numberOfPlayers")
-                      <*> (o .:? "supportedLanguages")
-                      <*> (fmap . fmap . fmap) convertLinkType (o .:? "platforms")
-                      <*> (fmap . fmap . fmap) convertLinkType (o .:? "ratings")
-                      <*> (fmap . fmap . fmap) convertLinkType (o .:? "ratingDescriptions")
-                      <*> (convertLinkType <$> o .:? "minimumHardwareSpecifications")
-                      <*> (convertLinkType <$> o .:? "launcherIcon")
-                      <*> (convertLinkType <$> o .:? "launcherLogo")
-                      <*> (o .:? "patchNotesImage")
-                      <*> (fmap . fmap . fmap) convertLinkType (o .:? "launcherFilters")
-                      <*> (o .:? "orderLink")
-                      <*> (convertLinkType <$> o .:? "launchInstallBackground")
-                      <*> (convertLinkType <$> o .:? "launchInstallHero")
-                      <*> (convertLinkType <$> o .:? "launchInstallLogo")
-                      <*> (o .:? "launcherUuid")
-                      <*> (o .:? "visibleIfUnowned")
-                      <*> (convertLinkType <$> o .:? "restrictedSettings")
-                      <*> (convertLinkType <$> o .:? "boxArt")
-    parseJSON _          = mzero

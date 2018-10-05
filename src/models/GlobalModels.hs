@@ -8,6 +8,8 @@ import Data.Aeson
 import Data.Time.Clock
 import Data.Time.Format
 
+type MString = Maybe String
+
 data AllContentfulQuery a = AllContentfulQuery {
     topSys :: SysLink
   , total    :: Integer
@@ -24,33 +26,22 @@ instance (FromJSON a) => FromJSON (AllContentfulQuery a) where
                            <*> (o .: "limit")
                            <*> (o .: "items")
 
+type MSysLink = Maybe SysLink
 data SysLink = SysLink {
-        type_     :: Maybe String,
-        linkType  :: Maybe String,
-        id        :: Maybe String
+        type_     :: MString,
+        linkType  :: MString,
+        id        :: MString
 } deriving (Show, Eq)
 
--- a is the id
-data LinkType a = Space a | Environment a | ContentType a | Asset a | Entry a deriving (Show, Eq)
-
-convertLinkType :: Maybe SysLink -> (Maybe (LinkType String))
-convertLinkType (Just (SysLink (Just "Link") (Just "Environment") (Just id) )) = Just $ Environment id
-convertLinkType (Just (SysLink (Just "Link") (Just "ContentType") (Just id))) = Just $ ContentType id
-convertLinkType (Just (SysLink (Just "Link") (Just "Asset") (Just id))) = Just $ Asset id
-convertLinkType (Just (SysLink (Just "Link") (Just "Entry") (Just id))) = Just $ Entry id
-convertLinkType (Just (SysLink (Just "Link") (Just "Space") (Just id))) = Just $ Space id
-convertLinkType _ = Nothing
-
-
 data SysItem = SysItem {
-  space :: SysLink
+  space :: MSysLink
   , sysItemType :: String
   , sysItemID   :: String
   , contentType :: SysLink
   , revision :: Integer
   , createdAt :: UTCTime
   , updatedAt :: UTCTime
-  , environment :: SysLink
+  , environment :: MSysLink
   , locale :: String
 } deriving (Show, Eq)
 
