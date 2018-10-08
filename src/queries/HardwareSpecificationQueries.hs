@@ -20,6 +20,9 @@ makeUrlFromSpace = "GET https://preview.contentful.com/spaces/52kyweqkx3gp/envir
 buildQueryHardwareSpecification :: ByteString -> [(ByteString, Maybe ByteString)]
 buildQueryHardwareSpecification token = [("access_token", Just token), ("content_type", Just "hardwareSpecification")]
 
+buildQueryHardwareData :: ByteString -> [(ByteString, Maybe ByteString)]
+buildQueryHardwareData token = [("access_token", Just token), ("content_type", Just "hardwareData")]
+
 createFullRequest :: [(ByteString, Maybe ByteString)] -> Request
 createFullRequest query = setQueryString query makeUrlFromSpace
 
@@ -34,7 +37,29 @@ getAllHardwareSpecificationIO = do
     hws <- getHardwareSpecificationAPI $ buildQueryHardwareSpecification $ fromString $ preview_access_token_sandbox config
     return $ fields <$> items hws
 
--- getAllHardwareSpecificationIO :: IO [Maybe Integer]
+getHardwareDataAPI :: [(ByteString, Maybe ByteString)] -> IO (AllContentfulQuery HardwareDataField)
+getHardwareDataAPI query = do
+    response <- httpJSON $ createFullRequest query
+    return $ getResponseBody response
+
+getAllHardwareDataIO :: IO [HardwareDataField]
+getAllHardwareDataIO = do
+    config <- getEnvironmentVars
+    hwds <- getHardwareDataAPI $ buildQueryHardwareData $ fromString $ preview_access_token_sandbox config
+    return $ fields <$> items hwds
+
+compareHardwareIOs :: IO ()
+compareHardwareIOs = do
+    specs <- getAllHardwareSpecificationIO
+    datas <- getAllHardwareDataIO
+    -- compareHWSData specs datas
+    undefined
+
+-- pure funcs
+
+compareHWSData :: [HardwareSpecificationField] -> [HardwareDataField] -> [a]
+compareHWSData specs datas = undefined
+-- getAllHardwareSpecificationIO :: IO` [Maybe Integer]
 -- getAllHardwareSpecificationIO = do
 --     config <- getEnvironmentVars
 --     hws <- getHardwareSpecificationAPI $ buildQueryHardwareSpecification $ fromString $ preview_access_token_sandbox config
