@@ -7,6 +7,7 @@ import Network.HTTP.Client (setQueryString)
 import Data.ByteString.Base64
 import Data.ByteString.UTF8 hiding (foldl)
 import Data.Foldable (foldl)
+import Data.List.Split(splitOn)
 import Data.Monoid
 import Control.Applicative
 
@@ -56,6 +57,19 @@ compareHardwareIOs = do
     undefined
 
 -- pure funcs
+breakIntoComponents :: String -> [String]
+breakIntoComponents str = []
+    where noCommas = strip $ splitOn ","
+          noSlash  = strip $ splitOn "/"
+          noOr     = strip $ splitOn " or " 
+
+-- breakIntoComponents :: String -> [String]
+-- breakIntoComponents [] = [""]
+-- breakIntoComponents (",":rest) = [""] : breakIntoComponents rest
+-- breakIntoComponents (" or ":rest) = [""] : breakIntoComponents rest
+-- breakIntoComponents ("/":rest) = [""] : breakIntoComponents rest
+-- breakIntoComponents (c:rest) = [""] : breakIntoComponents rest
+
 
 compareHWSData :: [HardwareSpecificationField] -> [HardwareDataField] -> [a]
 compareHWSData specs datas = undefined
