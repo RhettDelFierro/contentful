@@ -42,13 +42,6 @@ getAllGameIO = do
     gs     <- getGameAPI $ buildQueryGame $ fromString $ preview_access_token_sandbox config
     return $ fields <$> items gs
 
-getMultipleGameIO :: IO [[GameField]]
-getMultipleGameIO = do
-    config <- getEnvironmentVars
-    gs     <- mapConcurrently getGameAPI $ buildQueryGameLocales (fromString (preview_access_token_sandbox config)) <$> allLocales
-    -- return $ map fields $ items <$> gs
-    undefined
-
 results :: IO [Either [FieldName] [FieldName]]
 results = do
     gfs <- getAllGameIO
@@ -56,9 +49,20 @@ results = do
 
 -- data conversion:
 convertedFields :: GameField -> [Either [FieldName] FieldName]
-convertedFields gf = 
+convertedFields gf =
     [ convertMaybeToEither (title (gf :: GameField)) "title" 
     , convertMaybeToEither (description (gf :: GameField)) "description"
     , convertMaybeToEither (numberOfPlayers (gf :: GameField)) "numberOfPlayers"
     , convertMaybeToEither (orderLink (gf :: GameField)) "orderLink"
     ]
+
+data TranslationNeeded = 
+    TranslationNeeded { locale :: String
+                      , title :: String
+                      } deriving (Show, Eq)
+
+-- if any fields are Left:
+-- attach the locale
+-- attach the game
+buildTranslationNeededType :: AllContentfulQuery GameField -> a
+buildTranslationNeededType = undefined

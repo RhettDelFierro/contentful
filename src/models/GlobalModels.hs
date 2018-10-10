@@ -25,10 +25,10 @@ data AllContentfulQuery a = AllContentfulQuery {
 --   , includes :: Includes a
 } deriving (Show, Eq, Generic, FromJSON)
 
-data Includes a = Includes {
-    entry  :: [ContentfulItem a]
-  , assets :: [ContentfulItem a]
-} deriving (Show, Eq, Generic, FromJSON)
+-- data Includes a = Includes {
+--     entry  :: [ContentfulItem a]
+--   , assets :: [ContentfulItem a]
+-- } deriving (Show, Eq, Generic, FromJSON)
 
 data ContentfulItem a = ContentfulItem {
     sys    :: SysItem
