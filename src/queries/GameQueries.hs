@@ -1,3 +1,4 @@
+{-# LANGUAGE DuplicateRecordFields #-}
 {-# LANGUAGE OverloadedStrings #-}
 module Queries.GameQueries where
 
@@ -7,11 +8,13 @@ import Network.HTTP.Simple
 import Network.HTTP.Client (setQueryString)
 import Data.ByteString.Base64
 import Data.ByteString.UTF8 hiding (foldl)
+import Data.Either
 import Data.Foldable (foldl)
 import Data.Monoid
 import Control.Applicative
 
 import Global.GlobalSys (getEnvironmentVars, preview_access_token_sandbox)
+import Global.GlobalHelpers (convertMaybeToEither, FieldName, hoistErrors, sequenceEither)
 import Models.GlobalModels
 import Models.QueryTypes
 
@@ -46,17 +49,16 @@ getMultipleGameIO = do
     -- return $ map fields $ items <$> gs
     undefined
 
-data TranslationNeeded a = TranslationNeeded {
-    locale :: String
-  , translationNeeded :: a 
-}
+results :: IO [Either [FieldName] [FieldName]]
+results = do
+    gfs <- getAllGameIO
+    return $ sequenceEither . convertedFields <$> gfs
 
-type Language = String
-
-checkField :: Language -> GameField -> Maybe (TranslationNeeded a)
-checkField lang itm = undefined
-
--- findNoField :: [[GameItem]] -> [Maybe [TranslationNeeded a]]
--- findNoField [eng:gs] = map (description . fields) gs
--- findNoField [eng:gs] = map filterField gs
---   where filterField [others] = 
+-- data conversion:
+convertedFields :: GameField -> [Either [FieldName] FieldName]
+convertedFields gf = 
+    [ convertMaybeToEither (title (gf :: GameField)) "title" 
+    , convertMaybeToEither (description (gf :: GameField)) "description"
+    , convertMaybeToEither (numberOfPlayers (gf :: GameField)) "numberOfPlayers"
+    , convertMaybeToEither (orderLink (gf :: GameField)) "orderLink"
+    ]

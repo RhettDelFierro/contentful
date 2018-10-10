@@ -42,28 +42,28 @@ data DeveloperField =
 
 data GameField = 
     GameField { title :: MString
-            , launcherBackground  :: MSysLink
-            , description         :: MString
-            , exploreMoreLink     :: MString
-            , numberOfPlayers     :: MString
-            , supportedLanguages  :: Maybe [String]
-            , platforms           :: Maybe [MSysLink]
-            , ratings             :: Maybe [MSysLink]
-            , ratingDescriptions  :: Maybe [MSysLink]
-            , minimumHardwareSpecifications :: MSysLink
-            , launcherIcon        :: MSysLink
-            , launcherLogo        :: MSysLink
-            , patchNotesImage     :: MSysLink
-            , launcherFilters     :: Maybe [MSysLink]
-            , orderLink           :: MString
-            , launchInstallBackground :: MSysLink
-            , launchInstallHero   :: MSysLink
-            , launchInstallLogo   :: MSysLink
-            , launcherUuid        :: MString
-            , visibleIfUnowned    :: Maybe Bool
-            , restrictedSettings  :: MSysLink
-            , boxArt              :: MSysLink
-            } deriving (Show,Eq, Generic, FromJSON)
+              , launcherBackground  :: MSysLink
+              , description         :: MString
+              , exploreMoreLink     :: MString
+              , numberOfPlayers     :: MString
+              , supportedLanguages  :: Maybe [String]
+              , platforms           :: Maybe [MSysLink]
+              , ratings             :: Maybe [MSysLink]
+              , ratingDescriptions  :: Maybe [MSysLink]
+              , minimumHardwareSpecifications :: MSysLink
+              , launcherIcon        :: MSysLink
+              , launcherLogo        :: MSysLink
+              , patchNotesImage     :: MSysLink
+              , launcherFilters     :: Maybe [MSysLink]
+              , orderLink           :: MString
+              , launchInstallBackground :: MSysLink
+              , launchInstallHero   :: MSysLink
+              , launchInstallLogo   :: MSysLink
+              , launcherUuid        :: MString
+              , visibleIfUnowned    :: Maybe Bool
+              , restrictedSettings  :: MSysLink
+              , boxArt              :: MSysLink
+              } deriving (Show,Eq, Generic, FromJSON)
                             
 data GamePlatformField = 
     GamePlatformField { entryTitle :: MString
@@ -94,12 +94,12 @@ data HardwareFamilyField = HardwareFamilyField { name :: MString } deriving (Sho
 
 data HardwareFamilyClassifierField =
     HardwarefamilyClassifierField { name :: MString
-                             , searchText :: MString
-                             , _type :: MSysLink
-                             , manufacturer :: MSysLink
-                             , family :: MSysLink
-                             , modifierBeginning :: Maybe Bool
-    } deriving (Show, Eq, Generic, FromJSON)
+                                  , searchText :: MString
+                                  , _type :: MSysLink
+                                  , manufacturer :: MSysLink
+                                  , family :: MSysLink
+                                  , modifierBeginning :: Maybe Bool
+                                  } deriving (Show, Eq, Generic, FromJSON)
 
 data HardwareManufacturerField = HardwareManufacturerField { name :: MString } deriving (Show, Eq, Generic, FromJSON)
   
@@ -125,8 +125,8 @@ data HardwareSpecificationField =
 data HardwareTypeField = HardwareTypeField { name :: MString } deriving (Show, Eq, Generic, FromJSON)
 
 data LinkField = LinkField { linkDisplayName :: MString
-                 , linkUrl :: MString
-                 } deriving (Show, Eq, Generic, FromJSON)
+                           , linkUrl :: MString
+                           } deriving (Show, Eq, Generic, FromJSON)
 
 data LauncherConfigField = 
     LauncherConfigField { name :: MString
@@ -191,32 +191,32 @@ data LauncherExternalLinksField =
 
 data LauncherFilterField = 
     LauncherFilterField { name ::MString
-                   , displayName :: MString
-                   } deriving (Show, Eq, Generic, FromJSON)
+                        , displayName :: MString
+                        } deriving (Show, Eq, Generic, FromJSON)
 
 data LauncherSidebarLinksField =
     LauncherSidebarLinksField { name :: MString
-                                , officialSite :: MString
-                                , twitter :: MString
-                                , facebook :: MString
-                                , forums :: MString
-                                , instagram :: MString
-                                , youtube :: MString
-                                , reddit :: MString
-                                , customLinkDisplayName1 :: MString
-                                , customLinkDisplayName2 :: MString
-                                , customLinkDisplayName3 :: MString
-                                , customLinkDisplayName4 :: MString
-                                , customLinkUrl1 :: MString
-                                , customLinkUrl2 :: MString
-                                , customLinkUrl3 :: MString
-                                , customLinkUrl4 :: MString
-                                } deriving (Show, Eq, Generic, FromJSON)
+                              , officialSite :: MString
+                              , twitter :: MString
+                              , facebook :: MString
+                              , forums :: MString
+                              , instagram :: MString
+                              , youtube :: MString
+                              , reddit :: MString
+                              , customLinkDisplayName1 :: MString
+                              , customLinkDisplayName2 :: MString
+                              , customLinkDisplayName3 :: MString
+                              , customLinkDisplayName4 :: MString
+                              , customLinkUrl1 :: MString
+                              , customLinkUrl2 :: MString
+                              , customLinkUrl3 :: MString
+                              , customLinkUrl4 :: MString
+                              } deriving (Show, Eq, Generic, FromJSON)
 data MessageOfTheDayField =
     MessageOfTheDayField { entriTitle :: MString
-                    , title :: MString
-                    , body :: MString
-                    } deriving (Show, Eq, Generic, FromJSON)
+                         , title :: MString
+                         , body :: MString
+                         } deriving (Show, Eq, Generic, FromJSON)
 data PatchNoteField = 
     PatchNoteField { title :: MString
                     , body :: MString
@@ -225,9 +225,9 @@ data PatchNoteField =
   
 data PaymentProcessorField =
     PaymentProcessorField { displayName :: MString
-                     , _type :: MString
-                     , image :: MSysLink
-                     } deriving (Show, Eq, Generic, FromJSON)
+                          , _type :: MString
+                          , image :: MSysLink
+                          } deriving (Show, Eq, Generic, FromJSON)
 
 data PromoModalField =
     PromoModalField { promoTitle :: MString
@@ -260,18 +260,18 @@ data RatingDescriptionField =
 
 data RatingSystemField =
     RatingSystemField { name :: MString
-                 , supportedCountries :: Maybe [String]
-                 } deriving (Show, Eq, Generic, FromJSON)
+                      , supportedCountries :: Maybe [String]
+                      } deriving (Show, Eq, Generic, FromJSON)
 
 data ReleaseNoteField =
     ReleaseNoteField { patchReleaseDate :: MString
-                , clientVersion :: MString
-                , uiVersion :: MString
-                , newFeatureList :: Maybe [String]
-                , improvementsContent :: MString
-                , improvementsList :: Maybe [String]
-                , bugFixesList :: Maybe [String]
-                } deriving (Show, Eq, Generic, FromJSON)
+                     , clientVersion :: MString
+                     , uiVersion :: MString
+                     , newFeatureList :: Maybe [String]
+                     , improvementsContent :: MString
+                     , improvementsList :: Maybe [String]
+                     , bugFixesList :: Maybe [String]
+                     } deriving (Show, Eq, Generic, FromJSON)
 
 data SkuField = 
     SkuField { title :: MString

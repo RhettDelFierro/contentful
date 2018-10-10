@@ -35,7 +35,7 @@ getHardwareSpecificationAPI query = do
 getAllHardwareSpecificationIO :: IO [HardwareSpecificationField]
 getAllHardwareSpecificationIO = do
     config <- getEnvironmentVars
-    hws <- getHardwareSpecificationAPI $ buildQueryHardwareSpecification $ fromString $ preview_access_token_sandbox config
+    hws    <- getHardwareSpecificationAPI $ buildQueryHardwareSpecification $ fromString $ preview_access_token_sandbox config
     return $ fields <$> items hws
 
 getHardwareDataAPI :: [(ByteString, Maybe ByteString)] -> IO (AllContentfulQuery HardwareDataField)
@@ -46,7 +46,7 @@ getHardwareDataAPI query = do
 getAllHardwareDataIO :: IO [HardwareDataField]
 getAllHardwareDataIO = do
     config <- getEnvironmentVars
-    hwds <- getHardwareDataAPI $ buildQueryHardwareData $ fromString $ preview_access_token_sandbox config
+    hwds   <- getHardwareDataAPI $ buildQueryHardwareData $ fromString $ preview_access_token_sandbox config
     return $ fields <$> items hwds
 
 compareHardwareIOs :: IO ()
@@ -55,44 +55,3 @@ compareHardwareIOs = do
     datas <- getAllHardwareDataIO
     -- compareHWSData specs datas
     undefined
-
--- pure funcs
-breakIntoComponents :: String -> [String]
-breakIntoComponents str = []
-    where noCommas = strip $ splitOn ","
-          noSlash  = strip $ splitOn "/"
-          noOr     = strip $ splitOn " or " 
-
--- breakIntoComponents :: String -> [String]
--- breakIntoComponents [] = [""]
--- breakIntoComponents (",":rest) = [""] : breakIntoComponents rest
--- breakIntoComponents (" or ":rest) = [""] : breakIntoComponents rest
--- breakIntoComponents ("/":rest) = [""] : breakIntoComponents rest
--- breakIntoComponents (c:rest) = [""] : breakIntoComponents rest
-
-
-compareHWSData :: [HardwareSpecificationField] -> [HardwareDataField] -> [a]
-compareHWSData specs datas = undefined
--- getAllHardwareSpecificationIO :: IO` [Maybe Integer]
--- getAllHardwareSpecificationIO = do
---     config <- getEnvironmentVars
---     hws <- getHardwareSpecificationAPI $ buildQueryHardwareSpecification $ fromString $ preview_access_token_sandbox config
---     return $ map cpuPowerIntel $ fields <$> items hws
-    -- undefined
--- top level interface
-
-
--- findMatches :: IO [a]
--- findMatches = do
---     hwis <- getAllHardwareSpecificationIO
---     gs <- getAllGameIO
---     undefined
-
-
--- printEach :: IO ()
--- printEach = do
---     hwis <- buildQueryIO
---     let hfs = hardwareItemFields <$> hwis
---         titles = title <$> hfs
---         ps = print <$> titles
---     return ()
